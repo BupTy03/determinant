@@ -8,7 +8,7 @@
 struct Determinant_error : std::runtime_error
 {
 	explicit Determinant_error(const char* q) : std::runtime_error(q){}
-	explicit Determinant_error(std::string& s) : std::runtime_error(s){}
+	explicit Determinant_error(const std::string& s) : std::runtime_error(s){}
 };
 
 template<typename T>
