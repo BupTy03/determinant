@@ -65,8 +65,8 @@ public:
 	}
 	explicit Matrix(const Index x, const Index y, const T& val) : Matrix(x, y)
 	{
-		for (Index i = 0; i < dm1; i++)
-			for (Index j = 0; j < dm2; j++)
+		for (Index i = 0; i < dm1; ++i)
+			for (Index j = 0; j < dm2; ++j)
 				data[i][j] = val;
 	}
 
