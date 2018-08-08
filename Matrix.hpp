@@ -371,7 +371,7 @@ public:
 		for(Index j = 0; j < dm2; ++j)
 		{
 			data[i][j] = *first;
-			first++;
+			++first;
 		}
 	}
 
@@ -396,7 +396,7 @@ public:
 		for(Index i = 0; i < dm1; ++i)
 		{
 			data[i][j] = *first;
-			first++;
+			++first;
 		}
 	}
 
@@ -474,7 +474,7 @@ public:
 
 		add_d1();
 
-		for (Index i = 0; i < dm2; i++)
+		for (Index i = 0; i < dm2; ++i)
 			data[old_dm1][i] = val;
 
 		return true;
@@ -492,10 +492,10 @@ public:
 
 		add_d1();
 
-		for (Index i = 0; i < dm2; i++)
+		for (Index i = 0; i < dm2; ++i)
 		{
 			data[old_dm1][i] = *first;
-			first++;
+			++first;
 		}
 
 		return true;
@@ -505,11 +505,11 @@ public:
 	{
 		if (newalloc <= space_d2) return;
 
-		for (Index i = 0; i < dm1; i++)
+		for (Index i = 0; i < dm1; ++i)
 		{
 			T* p = new T[newalloc];
 
-			for (Index j = 0; j < dm2; j++)
+			for (Index j = 0; j < dm2; ++j)
 				p[j] = data[i][j];
 
 			delete[] data[i];
@@ -524,9 +524,9 @@ public:
 		if (newsize <= dm2) return;
 
 		reserve_d2(newsize);
-		for (Index i = 0; i < dm1; i++)
+		for (Index i = 0; i < dm1; ++i)
 		{
-			for (Index j = dm2; j < newsize; j++)
+			for (Index j = dm2; j < newsize; ++j)
 				data[i][j] = {};
 		}
 
@@ -541,7 +541,7 @@ public:
 		else if (dm2 == space_d2)
 			reserve_d2(2 * space_d2);
 
-		for (Index i = 0; i < dm1; i++)
+		for (Index i = 0; i < dm1; ++i)
 			data[i][dm2] = {};
 
 		++dm2;
@@ -557,7 +557,7 @@ public:
 
 		add_d2();
 
-		for (Index i = 0; i < dm1; i++)
+		for (Index i = 0; i < dm1; ++i)
 			data[i][old_dm2] = val;
 
 		return true;
@@ -578,7 +578,7 @@ public:
 		for (Index i = 0; i < dm1; ++i)
 		{
 			data[i][old_dm2] = *first;
-			first++;
+			++first;
 		}
 
 		return true;
@@ -624,10 +624,10 @@ public:
 	friend ostream& operator <<(ostream& os, const Matrix& m)
 	{
 		os << "{" << endl;
-		for (Index i = 0; i < m.dm1; i++)
+		for (Index i = 0; i < m.dm1; ++i)
 		{
 			os << "{ ";
-			for (Index j = 0; j < m.dm2; j++)
+			for (Index j = 0; j < m.dm2; ++j)
 			{
 				os << m[i][j];
 
@@ -666,7 +666,7 @@ public:
 				++p;
 				return *this;
 			}
-			left++;
+			++left;
 			return *this;
 		} 
 		MatrixIterator& operator++(int) noexcept
@@ -677,7 +677,7 @@ public:
 				++p;
 				return *this;
 			}
-			left++;
+			++left;
 			return *this;
 		}
 	private:
@@ -706,7 +706,7 @@ public:
 				++p;
 				return *this;
 			}
-			left++;
+			++left;
 			return *this;
 		}
 		inline ConstMatrixIterator& operator++(int) noexcept
@@ -717,7 +717,7 @@ public:
 				++p;
 				return *this;
 			}
-			left++;
+			++left;
 			return *this;
 		}
 	private:
@@ -746,8 +746,8 @@ public:
 			return;
 
 		if(dm2 != 0)
-			for (Index i = 0; i < dm1; i++)
-					delete[] data[i];
+			for (Index i = 0; i < dm1; ++i)
+				delete[] data[i];
 
 		delete[] data;
 	}
