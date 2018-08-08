@@ -31,14 +31,14 @@ private:
 
 public:
 	constexpr SMatrix() noexcept {}
-	constexpr SMatrix(const T& val)
+	constexpr explicit SMatrix(const T& val)
 	{
 		for (Index i = 0; i < d1; ++i)
 			for (Index j = 0; j < d2; ++j)
 				elem[i][j] = val;
 	}
 	template<const Index n>
-	constexpr SMatrix(const T(&arr)[n])
+	constexpr explicit SMatrix(const T(&arr)[n])
 	{
 		static_assert(d1*d2 == n, "size of Matrix != size of array");
 
