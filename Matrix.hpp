@@ -403,8 +403,8 @@ public:
 	template<typename F, typename... Args>
 	void apply(F func, Args&&... args)
 	{
-		for (Index i = 0; i < dm1; i++)
-			for (Index j = 0; j < dm2; j++)
+		for (Index i = 0; i < dm1; ++i)
+			for (Index j = 0; j < dm2; ++j)
 				data[i][j] = func(data[i][j], std::forward<Args>(args)...);
 	}
 
