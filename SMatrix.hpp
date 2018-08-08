@@ -9,9 +9,9 @@ using Index = long;
 
 using namespace std;
 
-struct SMatrix_error : std::runtime_error{
-	explicit SMatrix_error(const char* q) : std::runtime_error(q){}
-	explicit SMatrix_error(const string& n) : std::runtime_error(n){}
+struct SMatrix_error : runtime_error{
+	explicit SMatrix_error(const char* q) : runtime_error(q){}
+	explicit SMatrix_error(const string& n) : runtime_error(n){}
 };
 
 template<typename T, const Index d1, const Index d2>

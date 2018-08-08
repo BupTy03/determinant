@@ -8,9 +8,9 @@ using Index = long;
 
 using namespace std;
 
-struct Matrix_error : std::runtime_error{
-	explicit Matrix_error(const char* q) : std::runtime_error(q){}
-	explicit Matrix_error(const string& s) : std::runtime_error(s){}
+struct Matrix_error : runtime_error{
+	explicit Matrix_error(const char* q) : runtime_error(q){}
+	explicit Matrix_error(const string& s) : runtime_error(s){}
 };
 
 template<typename T>
@@ -239,6 +239,29 @@ public:
 
 	inline T const* operator [](Index i) const noexcept { return data[i]; }
 	inline T* operator [](Index i) noexcept { return data[i]; }
+
+	void swap_rows(Index r1, Index r2)
+	{
+		if(r1 == r2) 
+			return;
+
+		range_check(r1, 0, dm1 - 1);
+		range_check(r2, 0, dm1 - 1);
+
+		std::swap(data[r1], data[r2]);
+	}
+
+	void swap_colls(Index c1, Index c2)
+	{
+		if(c1 == c2) 
+			return;
+
+		range_check(c1, 0, dm2 - 1);
+		range_check(c2, 0, dm2 - 1);
+
+		for(Index i = 0; i < dm1; ++i)
+			std::swap(data[i][c1], data[i][c2]);
+	}
 
 	// rows [n:dm1)
 	Matrix slice(Index n)

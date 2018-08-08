@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <vector>
 #include <stdexcept>
 #include "Matrix.hpp"
 #include "SMatrix.hpp"
@@ -23,7 +24,7 @@ private:
 	T decomp_of_line_method()
 	{
 		T sum{};
-		for (Index i = 0; i < rnk; ++i)
+		for (decltype(rnk) i = 0; i < rnk; ++i)
 		{
 			sum += mtx[0][i] * addition(1, i + 1);
 		}
@@ -51,16 +52,18 @@ public:
 	explicit Determinant(const Matrix<T>& _mtx)
 	{
 		if(_mtx.size_dim1() == 0 || _mtx.size_dim2() == 0)
-			throw Determinant_error{"empty matrix"};
+			throw Determinant_error{"wrong matrix"};
 
 		if(_mtx.size_dim1() != _mtx.size_dim2())
 			throw Determinant_error{"dimensions should be equal"};
 
-		for(Index i = 0; i < this->rnk; ++i)
+		rnk = _mtx.size_dim1();
+		mtx.resize(rnk, rnk);
+		for(Index i = 0; i < rnk; ++i)
 		{
-			for(Index j = 0; j < this->rnk; ++j)
+			for(Index j = 0; j < rnk; ++j)
 			{
-				this->mtx[i][j] = _mtx[i][j];
+				mtx[i][j] = _mtx[i][j];
 			}
 		}
 	}
@@ -69,35 +72,33 @@ public:
 		if(_mtx.size_dim1() != _mtx.size_dim2())
 			throw Determinant_error{"dimensions should be equal"};
 
-		this->rnk = _mtx.size_dim1();
-		this->mtx = std::move(_mtx);
+		rnk = _mtx.size_dim1();
+		mtx = std::move(_mtx);
 	}
 	Determinant minor(Index k, Index m)
 	{
 		k = k - 1;
 		m = m - 1;
-		Matrix<T> __mtx{mtx.size_dim1() - 1, mtx.size_dim2() - 1};
-		auto dim1 = __mtx.size_dim1();
-		auto dim2 = __mtx.size_dim2();
-		for(decltype(dim1) i = 0, _i = 0; i <= dim1 && _i < dim1; ++i, ++_i)
+		auto minor_rnk = rnk - 1;
+		Matrix<T> __mtx(minor_rnk, minor_rnk);
+		for(decltype(minor_rnk) i = 0, _i = 0; i <= minor_rnk && _i < minor_rnk; ++i, ++_i)
 		{
 			if(i == k)
 			{
 				--_i;
 				continue;
 			}
-			for(decltype(dim2) j = 0, _j = 0; j <= dim2 && _j < dim2; ++j, ++_j)
+			for(decltype(minor_rnk) j = 0, _j = 0; j <= minor_rnk && _j < minor_rnk; ++j, ++_j)
 			{
 				if(j == m)
 				{
 					--_j;
 					continue;
 				}
-
 				__mtx[_i][_j] = mtx[i][j];
-			}	
+			}
 		}
-
+		
 		return Determinant{std::move(__mtx)};
 	}
 	T det()
@@ -125,13 +126,27 @@ public:
 		solved = true;
 		return result;
 	}
-
 	inline T addition(Index i, Index j)
 	{
 		T mul(((i + j) % 2) ? -1 : 1);
 		return (minor(i, j)).det() * mul;
 	}
-
+	void transpose()
+	{
+		for(decltype(rnk) i = 1; i < rnk; ++i)
+		{
+			for(decltype(rnk) j = 1; j <= i; ++j)
+			{
+				std::swap(mtx[i][i - j], mtx[i - j][i]);
+			}
+		}
+	}
+	friend Determinant transposed(const Determinant& det)
+	{
+		Determinant __det = det;
+		__det.transpose();
+		return __det;
+	}
 	inline Matrix<T>& matrix() noexcept { return mtx; }
 	inline Matrix<T> const& matrix() const noexcept { return mtx; }
 	inline Index rank() const noexcept { return rnk; }

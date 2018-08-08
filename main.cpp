@@ -6,13 +6,19 @@ using namespace std;
 
 int main()
 {
-	SMatrix<int, 4, 4> mtx = { 3, -3, -5, 8,
-				  -3,  2,  4, -6,
-				   2, -5, -7,  5,
-				  -4,  3,  5, -6 };
+	SMatrix<int, 5, 5> mtx;
+
+	int count = 0;
+	for(auto& it : mtx)
+		it = ++count;
+
 	Determinant<int> det{mtx};
 
-	cout << det.det() << endl;
+	cout << "Matrix: " << det.matrix() << endl;
+	cout << "Transposed: " << (transposed(det)).matrix() << endl;
+	cout << "Determinant: " << det.det() << endl;
+	cout << "Minor(2, 2): " << (det.minor(2, 2)).matrix() << endl;
+	cout << "Addition(2, 2): " << det.addition(2, 2) << endl;
 
 	return 0;
 }
