@@ -33,8 +33,8 @@ public:
 	constexpr SMatrix() noexcept {}
 	constexpr SMatrix(const T& val)
 	{
-		for (Index i = 0; i < d1; i++)
-			for (Index j = 0; j < d2; j++)
+		for (Index i = 0; i < d1; ++i)
+			for (Index j = 0; j < d2; ++j)
 				elem[i][j] = val;
 	}
 	template<const Index n>
@@ -46,7 +46,7 @@ public:
 		for (Index i = 0; i < d1; ++i)
 			for (Index j = 0; j < d2; ++j)
 				elem[i][j] = arr[num];
-				num++;
+				++num;
 	}
 	constexpr SMatrix(std::initializer_list<T> init_list)
 	{
@@ -59,7 +59,7 @@ public:
 			for (Index j = 0; j < d2; ++j)
 			{
 				elem[i][j] = *initlstIt;
-				initlstIt++;
+				++initlstIt;
 			}
 		}
 	}
@@ -107,26 +107,26 @@ public:
 
 	void fill(const T& val)
 	{
-		for (Index i = 0; i < d1; i++)
-			for (Index j = 0; j < d2; j++)
+		for (Index i = 0; i < d1; ++i)
+			for (Index j = 0; j < d2; ++j)
 				elem[i][j] = val;
 	}
 
 	template<typename F, typename... Args>
 	void apply(F func, Args&&... args)
 	{
-		for (Index i = 0; i < d1; i++)
-			for (Index j = 0; j < d2; j++)
+		for (Index i = 0; i < d1; ++i)
+			for (Index j = 0; j < d2; ++j)
 				data[i][j] = func(data[i][j], std::forward<Args>(args)...);
 	}
 
 	friend ostream& operator <<(ostream& os, const SMatrix<T, d1, d2>& m)
 	{
 		os << "{ ";
-		for (Index i = 0; i < d1; i++)
+		for (Index i = 0; i < d1; ++i)
 		{
 			os << "{ ";
-			for (Index j = 0; j < d2; j++)
+			for (Index j = 0; j < d2; ++j)
 			{
 				os << m[i][j];
 
